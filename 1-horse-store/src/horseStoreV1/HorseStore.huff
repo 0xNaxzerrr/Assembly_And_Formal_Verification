@@ -1,0 +1,5 @@
+// 60008060093d393df3 -> Contract Creation Bytecode
+
+#define macro MAIN() = takes(0) returns(0) {
+
+}
