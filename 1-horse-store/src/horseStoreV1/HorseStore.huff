@@ -1,6 +1,12 @@
+
+// send calldata -> function dispatch -> function
 // 60008060093d393df3 -> Contract Creation Bytecode
+// "Hey, take the binary after me, and stick it on-chain"
+// XXX?               -> Runtime Code
 
 // 60018060093d393df35f
+// Let's find the function selector -> route it to the code that updates horses
+
 #define macro MAIN() = takes(0) returns(0) {
     0x00                        // [0]
     // 0x02                     // [2, 0]
@@ -8,9 +14,9 @@
     // How do we cut down the calldata -> func selector ?
     // 64/2 = 32bytes -> right
     // We need to right shift 28 bytes, 224 bits
-    // type this commande in the terminal : cast to-base 224 hex -> 0xe0
-    0xe0                    // [0xe0, calldata(32)]        
-    shr                     // [function_selector]
+    // cast to-base 224 hex -> 0xe0
+    0xe0                        // [0xe0, calldata(32)]        
+    shr                         // [function_selector]
 
     // Jump -> function data associated with the selector
     // If f_select == updateHorseNumber -> ...
@@ -19,7 +25,7 @@
     // cast sig "updateHorseNumber(uint256)" -> 0xcdfead2e
     // cast sig "readNumberOfHorses()" -> 0xe026c017
 
-    0xcdfead2e                 // [0xcdfead2e, function_selector]
+    0xcdfead2e                // [0xcdfead2e, function_selector]
     eq                        // [true_if_func_selector_matches]
     // jump to updateHorseNumber code if true
     updateJump                // [updateHorseNumberProgramCounter, true/false]
@@ -27,7 +33,6 @@
 
     updateJump:
     SET_NUMBER_OF_HORSE()
-
 }
 
 #define macro SET_NUMBER_OF_HORSE() = takes(0) returns(0) {}
